@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人介绍网站</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>我的个人网站</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">个人介绍</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#schedule" class="nav-link">演出安排</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#music" class="nav-link">音乐展示</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#social" class="nav-link">微博链接</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页部分 -->
+    <section id="home" class="hero">
+        <!-- 视频背景 -->
+        <div class="video-background">
+            <video autoplay muted loop playsinline preload="auto" class="hero-video" id="heroVideo">
+                <source src="首页介绍视频.mp4" type="video/mp4">
+                <!-- 如果浏览器不支持视频，显示回退背景 -->
+                您的浏览器不支持视频播放。
+            </video>
+            <div class="video-overlay"></div>
+            <!-- 音频控制按钮 -->
+            <div class="video-controls">
+                <button class="audio-toggle" id="audioToggle" title="点击开启声音">
+                    <i class="fas fa-volume-mute"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>欢迎来到我的个人网站</h1>
+                <p>这里展示我的音乐、演出和个人生活</p>
+                <a href="#about" class="cta-button">了解更多</a>
+            </div>
+            <div class="hero-image">
+                <div class="profile-placeholder">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 个人介绍部分 -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">个人介绍</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>关于我</h3>
+                    <p>我是一名热爱音乐的音乐人，专注于创作和表演。通过音乐表达内心的情感，希望能与听众产生共鸣。</p>
+                    <p>在音乐的道路上，我不断探索新的可能性，融合不同的音乐元素，创造出独特的音乐风格。</p>
+                    <div class="skills">
+                        <h4>专业技能</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">作曲</span>
+                            <span class="skill-tag">编曲</span>
+                            <span class="skill-tag">演唱</span>
+                            <span class="skill-tag">吉他</span>
+                            <span class="skill-tag">钢琴</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-music"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 演出安排部分 -->
+    <section id="schedule" class="schedule-section">
+        <div class="container">
+            <h2 class="section-title">演出安排</h2>
+            <div class="schedule-content">
+                <div class="upcoming-events">
+                    <h3>即将到来的演出</h3>
+                    <div class="event-list">
+                        <div class="event-card">
+                            <div class="event-date">
+                                <span class="day">15</span>
+                                <span class="month">12月</span>
+                            </div>
+                            <div class="event-details">
+                                <h4>冬季音乐会</h4>
+                                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 北京音乐厅</p>
+                                <p class="event-time"><i class="fas fa-clock"></i> 19:30</p>
+                                <p class="event-description">带来温暖的冬季音乐，包括原创作品和经典曲目。</p>
+                            </div>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-date">
+                                <span class="day">28</span>
+                                <span class="month">12月</span>
+                            </div>
+                            <div class="event-details">
+                                <h4>跨年演唱会</h4>
+                                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 上海大剧院</p>
+                                <p class="event-time"><i class="fas fa-clock"></i> 22:00</p>
+                                <p class="event-description">与大家一起迎接新的一年，用音乐传递祝福。</p>
+                            </div>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-date">
+                                <span class="day">10</span>
+                                <span class="month">1月</span>
+                            </div>
+                            <div class="event-details">
+                                <h4>新年音乐会</h4>
+                                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 广州星海音乐厅</p>
+                                <p class="event-time"><i class="fas fa-clock"></i> 20:00</p>
+                                <p class="event-description">新年伊始，用美妙的音乐开启美好的一年。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 音乐展示部分 -->
+    <section id="music" class="music-section">
+        <div class="container">
+            <h2 class="section-title">音乐展示</h2>
+            <div class="music-content">
+                <div class="music-categories">
+                    <button class="category-btn active" data-category="all">全部</button>
+                    <button class="category-btn" data-category="original">原创作品</button>
+                    <button class="category-btn" data-category="cover">翻唱作品</button>
+                    <button class="category-btn" data-category="live">现场录音</button>
+                </div>
+                <div class="music-grid">
+                    <div class="music-item" data-category="original">
+                        <div class="music-cover">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="music-info">
+                            <h4>春天的旋律</h4>
+                            <p>原创作品</p>
+                            <span class="duration">3:45</span>
+                        </div>
+                    </div>
+                    <div class="music-item" data-category="cover">
+                        <div class="music-cover">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="music-info">
+                            <h4>夜空中最亮的星</h4>
+                            <p>翻唱作品</p>
+                            <span class="duration">4:20</span>
+                        </div>
+                    </div>
+                    <div class="music-item" data-category="original">
+                        <div class="music-cover">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="music-info">
+                            <h4>城市夜雨</h4>
+                            <p>原创作品</p>
+                            <span class="duration">4:15</span>
+                        </div>
+                    </div>
+                    <div class="music-item" data-category="live">
+                        <div class="music-cover">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="music-info">
+                            <h4>现场版 - 海阔天空</h4>
+                            <p>现场录音</p>
+                            <span class="duration">5:30</span>
+                        </div>
+                    </div>
+                    <div class="music-item" data-category="original">
+                        <div class="music-cover">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="music-info">
+                            <h4>梦想起航</h4>
+                            <p>原创作品</p>
+                            <span class="duration">3:55</span>
+                        </div>
+                    </div>
+                    <div class="music-item" data-category="cover">
+                        <div class="music-cover">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="music-info">
+                            <h4>平凡之路</h4>
+                            <p>翻唱作品</p>
+                            <span class="duration">4:45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 微博链接部分 -->
+    <section id="social" class="social-section">
+        <div class="container">
+            <h2 class="section-title">微博链接</h2>
+            <div class="social-content">
+                <div class="social-links">
+                    <a href="#" class="social-card weibo">
+                        <div class="social-icon">
+                            <i class="fab fa-weibo"></i>
+                        </div>
+                        <div class="social-info">
+                            <h4>微博主页</h4>
+                            <p>关注我的最新动态和音乐分享</p>
+                            <span class="followers">粉丝: 12.5K</span>
+                        </div>
+                    </a>
+                    <a href="#" class="social-card wechat">
+                        <div class="social-icon">
+                            <i class="fab fa-weixin"></i>
+                        </div>
+                        <div class="social-info">
+                            <h4>微信公众号</h4>
+                            <p>深度音乐内容和个人感悟</p>
+                            <span class="followers">订阅: 8.2K</span>
+                        </div>
+                    </a>
+                    <a href="#" class="social-card douyin">
+                        <div class="social-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="social-info">
+                            <h4>抖音账号</h4>
+                            <p>短视频音乐分享和日常</p>
+                            <span class="followers">粉丝: 25.8K</span>
+                        </div>
+                    </a>
+                    <a href="#" class="social-card bilibili">
+                        <div class="social-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="social-info">
+                            <h4>B站频道</h4>
+                            <p>音乐教学和演奏视频</p>
+                            <span class="followers">粉丝: 15.3K</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="latest-posts">
+                    <h3>最新动态</h3>
+                    <div class="post-list">
+                        <div class="post-item">
+                            <div class="post-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="post-content">
+                                <p>今天在录音棚完成了新歌的录制，期待和大家分享！🎵</p>
+                                <span class="post-time">2小时前</span>
+                            </div>
+                        </div>
+                        <div class="post-item">
+                            <div class="post-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="post-content">
+                                <p>感谢昨晚来听演唱会的朋友们，你们的热情让我感动！❤️</p>
+                                <span class="post-time">1天前</span>
+                            </div>
+                        </div>
+                        <div class="post-item">
+                            <div class="post-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="post-content">
+                                <p>新专辑正在制作中，这次尝试了全新的音乐风格，敬请期待！</p>
+                                <span class="post-time">3天前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p><i class="fas fa-envelope"></i> email@example.com</p>
+                    <p><i class="fas fa-phone"></i> +86 138-0000-0000</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#about">个人介绍</a></li>
+                        <li><a href="#schedule">演出安排</a></li>
+                        <li><a href="#music">音乐展示</a></li>
+                        <li><a href="#social">微博链接</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>关注我</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 个人介绍网站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
