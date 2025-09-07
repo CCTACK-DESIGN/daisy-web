@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频代理测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .video-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        video {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        .warning { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>🔧 CORS问题解决方案</h1>
+    
+    <div class="status error">
+        <strong>问题诊断：</strong>云端视频服务器未启用CORS，浏览器阻止了跨域视频加载。<br>
+        <strong>错误信息：</strong>CORS is not enabled for this bucket.
+    </div>
+
+    <div class="status warning">
+        <strong>临时解决方案：</strong>使用iframe或object标签绕过CORS限制
+    </div>
+
+    <div class="video-container">
+        <h2>方案1：使用iframe嵌入</h2>
+        <iframe 
+            width="800" 
+            height="450" 
+            src="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%A6%96%E9%A1%B5%E8%A7%86%E9%A2%91%E8%83%8C%E6%99%AF.mp4" 
+            frameborder="0" 
+            allowfullscreen>
+        </iframe>
+        <div class="status info">iframe方式可能绕过CORS限制</div>
+    </div>
+
+    <div class="video-container">
+        <h2>方案2：直接链接播放</h2>
+        <p>
+            <a href="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%A6%96%E9%A1%B5%E8%A7%86%E9%A2%91%E8%83%8C%E6%99%AF.mp4" target="_blank" style="color: #007bff; text-decoration: none;">
+                🎬 点击直接播放首页背景视频
+            </a>
+        </p>
+        <p>
+            <a href="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA1.mp4" target="_blank" style="color: #007bff; text-decoration: none;">
+                🎵 点击直接播放音乐展示1
+            </a>
+        </p>
+        <p>
+            <a href="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA2.mp4" target="_blank" style="color: #007bff; text-decoration: none;">
+                🎵 点击直接播放音乐展示2
+            </a>
+        </p>
+        <p>
+            <a href="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA3.mp4" target="_blank" style="color: #007bff; text-decoration: none;">
+                🎵 点击直接播放音乐展示3
+            </a>
+        </p>
+        <div class="status info">直接链接在新标签页中打开，不受CORS限制</div>
+    </div>
+
+    <div class="video-container">
+        <h2>📋 解决方案建议</h2>
+        <div class="status info">
+            <strong>推荐做法：</strong><br>
+            1. <strong>联系云服务提供商</strong>：请阿里云管理员为OSS存储桶启用CORS<br>
+            2. <strong>CORS配置示例：</strong><br>
+            <code style="background: #f8f9fa; padding: 2px 4px;">
+            AllowedOrigin: *<br>
+            AllowedMethod: GET<br>
+            AllowedHeader: *
+            </code><br>
+            3. <strong>临时方案</strong>：使用直接链接或下载到本地服务器
+        </div>
+    </div>
+
+    <div class="video-container">
+        <h2>🛠️ 本地服务器方案</h2>
+        <div class="status warning">
+            如果无法修改云端CORS设置，可以：<br>
+            1. 下载视频文件到本地服务器<br>
+            2. 修改HTML中的视频源为本地路径<br>
+            3. 这样就不会有CORS问题
+        </div>
+        <button onclick="downloadVideos()" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+            📥 获取下载命令
+        </button>
+        <div id="downloadCommands" style="display: none; margin-top: 10px; background: #f8f9fa; padding: 10px; border-radius: 4px;">
+            <strong>在终端中运行以下命令下载视频：</strong><br>
+            <code>
+            curl -o "首页视频背景.mp4" "https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%A6%96%E9%A1%B5%E8%A7%86%E9%A2%91%E8%83%8C%E6%99%AF.mp4"<br>
+            curl -o "音乐展示1.mp4" "https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA1.mp4"<br>
+            curl -o "音乐展示2.mp4" "https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA2.mp4"<br>
+            curl -o "音乐展示3.mp4" "https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA3.mp4"
+            </code>
+        </div>
+    </div>
+
+    <script>
+        function downloadVideos() {
+            const commands = document.getElementById('downloadCommands');
+            commands.style.display = commands.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

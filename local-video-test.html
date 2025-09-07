@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地视频测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .video-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        video {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🎬 本地视频测试页面</h1>
+    
+    <div class="status info">
+        <strong>解决方案：</strong>使用本地视频文件，避免CORS问题
+    </div>
+
+    <div class="video-container">
+        <h2>1. 首页背景视频（本地）</h2>
+        <video controls preload="metadata" id="video1">
+            <source src="首页视频背景.mp4" type="video/mp4">
+            您的浏览器不支持视频播放。
+        </video>
+        <div id="status1" class="status">加载中...</div>
+    </div>
+
+    <div class="video-container">
+        <h2>2. 音乐展示视频1（本地）</h2>
+        <video controls preload="metadata" id="video2">
+            <source src="音乐展示1.mp4" type="video/mp4">
+            您的浏览器不支持视频播放。
+        </video>
+        <div id="status2" class="status">加载中...</div>
+    </div>
+
+    <div class="video-container">
+        <h2>3. 音乐展示视频2（本地）</h2>
+        <video controls preload="metadata" id="video3">
+            <source src="音乐展示2.mp4" type="video/mp4">
+            您的浏览器不支持视频播放。
+        </video>
+        <div id="status3" class="status">加载中...</div>
+    </div>
+
+    <div class="video-container">
+        <h2>4. 音乐展示视频3（本地）</h2>
+        <video controls preload="metadata" id="video4">
+            <source src="音乐展示3.mp4" type="video/mp4">
+            您的浏览器不支持视频播放。
+        </video>
+        <div id="status4" class="status">加载中...</div>
+    </div>
+
+    <div class="video-container">
+        <h2>📊 测试结果总结</h2>
+        <div id="summary" class="status info">
+            正在检测视频加载状态...
+        </div>
+    </div>
+
+    <script>
+        // 视频状态检测
+        function checkVideoStatus(videoId, statusId) {
+            const video = document.getElementById(videoId);
+            const status = document.getElementById(statusId);
+            
+            video.addEventListener('loadedmetadata', function() {
+                status.className = 'status success';
+                status.innerHTML = `✅ 本地视频加载成功！<br>时长: ${Math.round(video.duration)}秒<br>尺寸: ${video.videoWidth}x${video.videoHeight}<br>文件大小: 本地服务器`;
+                updateSummary();
+            });
+            
+            video.addEventListener('error', function(e) {
+                status.className = 'status error';
+                status.innerHTML = `❌ 视频加载失败！<br>错误信息: ${e.message || '未知错误'}`;
+                updateSummary();
+            });
+            
+            video.addEventListener('canplay', function() {
+                if (status.className.includes('success')) return;
+                status.className = 'status success';
+                status.innerHTML = `✅ 本地视频可以播放！<br>准备就绪`;
+                updateSummary();
+            });
+            
+            // 超时检测
+            setTimeout(() => {
+                if (status.innerHTML === '加载中...') {
+                    status.className = 'status error';
+                    status.innerHTML = '⏱️ 视频加载超时（10秒）';
+                    updateSummary();
+                }
+            }, 10000);
+        }
+        
+        function updateSummary() {
+            const statuses = ['status1', 'status2', 'status3', 'status4'];
+            const summary = document.getElementById('summary');
+            
+            let success = 0;
+            let failed = 0;
+            let loading = 0;
+            
+            statuses.forEach(id => {
+                const status = document.getElementById(id);
+                if (status.className.includes('success')) success++;
+                else if (status.className.includes('error')) failed++;
+                else loading++;
+            });
+            
+            summary.innerHTML = `
+                📈 测试进度: ${success + failed}/4 完成<br>
+                ✅ 成功: ${success} 个视频<br>
+                ❌ 失败: ${failed} 个视频<br>
+                ⏳ 加载中: ${loading} 个视频
+            `;
+            
+            if (loading === 0) {
+                if (success === 4) {
+                    summary.className = 'status success';
+                    summary.innerHTML += '<br><br>🎉 所有本地视频都可以正常播放！现在可以访问主页了。';
+                } else {
+                    summary.className = 'status error';
+                    summary.innerHTML += '<br><br>⚠️ 部分本地视频无法播放，请检查文件是否存在。';
+                }
+            }
+        }
+        
+        // 初始化检测
+        checkVideoStatus('video1', 'status1');
+        checkVideoStatus('video2', 'status2');
+        checkVideoStatus('video3', 'status3');
+        checkVideoStatus('video4', 'status4');
+        
+        // 页面加载完成提示
+        window.addEventListener('load', function() {
+            console.log('🎬 本地视频测试页面加载完成');
+            console.log('📁 视频源: 本地服务器文件');
+            console.log('🌐 当前URL:', window.location.href);
+        });
+    </script>
+</body>
+</html>
