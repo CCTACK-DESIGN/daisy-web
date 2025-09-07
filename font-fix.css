@@ -1,0 +1,58 @@
+/* 字体修复CSS - 使用更兼容的方式加载字体 */
+
+/* 英雄体字体 - 多种格式支持 */
+@font-face {
+    font-family: 'VideoTheme';
+    src: url('./英雄体（主题）.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 手写（潇洒）字体 */
+@font-face {
+    font-family: 'HandwritingStyle';
+    src: url('./手写（潇洒）.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 手写（锋利）字体 */
+@font-face {
+    font-family: 'HandwritingSharp';
+    src: url('./手写（锋利）.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 强制字体应用 - 英雄体 */
+.hero-name,
+.main-title,
+.music-section .section-title {
+    font-family: 'VideoTheme', 'PingFang SC Heavy', 'Helvetica Neue', 'Arial Black', '黑体', sans-serif !important;
+    font-weight: bold !important;
+}
+
+/* 强制字体应用 - 手写体 */
+.hero-subtitle,
+.gallery-title,
+.nav-logo h2,
+.performance-link,
+.cloud-link,
+.cloud-title {
+    font-family: 'HandwritingSharp', 'Kaiti SC', 'STKaiti', '楷体', serif !important;
+    font-weight: normal !important;
+}
+
+/* 备用方案 - 如果自定义字体不可用，使用系统字体 */
+.fallback-hero {
+    font-family: 'PingFang SC Heavy', 'Helvetica Neue', 'Arial Black', '黑体', sans-serif !important;
+    font-weight: 900 !important;
+}
+
+.fallback-handwriting {
+    font-family: 'Kaiti SC', 'STKaiti', '楷体', serif !important;
+    font-style: italic !important;
+}

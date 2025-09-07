@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字体测试页面</title>
+    <style>
+        /* 字体定义 */
+        @font-face {
+            font-family: 'VideoTheme';
+            src: url('英雄体（主题）.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'HandwritingStyle';
+            src: url('手写（潇洒）.TTF') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'HandwritingSharp';
+            src: url('手写（锋利）.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            padding: 50px;
+            line-height: 2;
+        }
+
+        .test-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid #333;
+        }
+
+        .hero-font {
+            font-family: 'VideoTheme', 'STHeiti', 'SimHei', '黑体', sans-serif;
+            font-size: 3rem;
+            color: #f4c430;
+        }
+
+        .handwriting-font {
+            font-family: 'HandwritingStyle', 'STKaiti', 'KaiTi', '楷体', serif;
+            font-size: 2rem;
+            color: #4a90e2;
+        }
+
+        .sharp-font {
+            font-family: 'HandwritingSharp', 'STKaiti', 'KaiTi', '楷体', serif;
+            font-size: 2rem;
+            color: #28a745;
+        }
+
+        .fallback-font {
+            font-family: 'STKaiti', 'KaiTi', '楷体', serif;
+            font-size: 2rem;
+            color: #dc3545;
+        }
+
+        .info {
+            font-size: 1rem;
+            color: #ccc;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>字体加载测试页面</h1>
+    
+    <div class="test-section">
+        <h2>英雄体（主题）测试</h2>
+        <div class="hero-font">张格菡</div>
+        <div class="info">如果显示为特殊字体，说明英雄体加载成功</div>
+    </div>
+
+    <div class="test-section">
+        <h2>手写（潇洒）测试</h2>
+        <div class="handwriting-font">音乐是我的生命</div>
+        <div class="info">如果显示为手写体，说明潇洒手写体加载成功</div>
+    </div>
+
+    <div class="test-section">
+        <h2>手写（锋利）测试</h2>
+        <div class="sharp-font">我的生活记录</div>
+        <div class="info">如果显示为锋利手写体，说明锋利手写体加载成功</div>
+    </div>
+
+    <div class="test-section">
+        <h2>系统备用字体测试</h2>
+        <div class="fallback-font">系统楷体显示效果</div>
+        <div class="info">这是系统备用字体的显示效果</div>
+    </div>
+
+    <div class="test-section">
+        <h2>字体文件检查</h2>
+        <p>请检查以下字体文件是否存在：</p>
+        <ul>
+            <li>英雄体（主题）.ttf</li>
+            <li>手写（潇洒）.TTF</li>
+            <li>手写（锋利）.ttf</li>
+        </ul>
+    </div>
+
+    <script>
+        // 检查字体是否加载成功
+        document.fonts.ready.then(function() {
+            console.log('所有字体加载完成');
+            
+            // 检查每个字体是否可用
+            const fonts = [
+                'VideoTheme',
+                'HandwritingStyle', 
+                'HandwritingSharp'
+            ];
+            
+            fonts.forEach(font => {
+                if (document.fonts.check('16px ' + font)) {
+                    console.log(font + ' 字体加载成功');
+                } else {
+                    console.log(font + ' 字体加载失败');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

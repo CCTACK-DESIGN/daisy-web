@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>我的生活记录 - 照片展示</title>
+    <link rel="icon" type="image/png" href="图标新.png">
+    <link rel="shortcut icon" type="image/png" href="图标新.png">
+    <link rel="apple-touch-icon" href="图标新.png">
+    <link rel="stylesheet" href="gallery.css?v=20250831T2150">
+    <link rel="stylesheet" href="styles.css?v=20250831T2150">
+    <link rel="stylesheet" href="font-fix.css?v=20250831T2200">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 强制预加载字体 -->
+    <link rel="preload" href="英雄体（主题）.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="手写（潇洒）.TTF" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="手写（锋利）.ttf" as="font" type="font/ttf" crossorigin>
+    
+     <!-- 自定义字体正确映射 -->
+     <style>
+         /* 强制字体加载和应用 */
+         @font-face {
+             font-family: 'VideoTheme';
+             src: url('英雄体（主题）.ttf') format('truetype');
+             font-display: swap;
+         }
+         
+         @font-face {
+             font-family: 'HandwritingSharp';
+             src: url('手写（锋利）.ttf') format('truetype');
+             font-display: swap;
+         }
+         
+         @font-face {
+             font-family: 'HandwritingStyle';
+             src: url('手写（潇洒）.TTF') format('truetype');
+             font-display: swap;
+         }
+         
+         /* 英雄体 - 用于主要标题 */
+         .hero-name,
+         .main-title,
+         .music-section .section-title {
+             font-family: 'VideoTheme', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', '黑体', sans-serif !important;
+             font-weight: normal !important;
+             font-size: 4rem !important;
+         }
+         
+         /* 手写（锋利）- 用于导航和页面标题 */
+         .nav-logo h2,
+         .gallery-title,
+         .performance-link,
+         .cloud-link,
+         .cloud-title {
+             font-family: 'HandwritingSharp', 'Kaiti SC', 'STKaiti', '楷体', serif !important;
+             font-weight: normal !important;
+         }
+         
+         /* 手写（潇洒）- 用于副标题 */
+         .hero-subtitle {
+             font-family: 'HandwritingStyle', 'Kaiti SC', 'STKaiti', '楷体', serif !important;
+             font-weight: normal !important;
+         }
+         
+         /* 确保字体大小和颜色正确显示 */
+         .gallery-title {
+             font-size: 4rem !important;
+             color: #ffffff !important;
+             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+         }
+         
+         .nav-logo h2 {
+             font-size: 1.5rem !important;
+             color: #ffffff !important;
+             letter-spacing: 2px !important;
+         }
+         
+         /* 字体加载检测和调试 */
+         body::before {
+             content: '';
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 0;
+             height: 0;
+             font-family: 'VideoTheme';
+             font-family: 'HandwritingSharp';
+             font-family: 'HandwritingStyle';
+             z-index: -1;
+         }
+     </style>
+</head>
+<body>
+    <!-- 字体加载测试元素 -->
+    <div class="font-test">
+        <span class="font-test-hero">英雄体测试</span>
+        <span class="font-test-handwriting">手写体测试</span>
+        <span class="font-test-sharp">锋利手写体测试</span>
+    </div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2><a href="gallery.html">我的生活记录</a></h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html#home" class="nav-link">首页</a>
+                </li>
+                                    <li class="nav-item dropdown">
+                        <a href="index.html#about" class="nav-link">关于我</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="performance.html">演出安排</a></li>
+                            <li><a href="learning.html">学习经历</a></li>
+                            <li><a href="achievements.html">成就与比赛获奖</a></li>
+                        </ul>
+                    </li>
+                <li class="nav-item">
+                    <a href="index.html#music" class="nav-link">作品展示</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 照片展示部分 -->
+    <section class="gallery-hero">
+        <div class="container">
+            <div class="gallery-header">
+                <h1 class="gallery-title">我的生活记录</h1>
+                <p class="gallery-subtitle">记录生活中的美好瞬间</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 照片网格 -->
+    <section class="gallery-section">
+        <div class="container">
+            <!-- 照片分类 -->
+            <div class="gallery-categories">
+                <button class="category-btn active" data-category="all">全部</button>
+                <button class="category-btn" data-category="achievements">成就记录</button>
+                <button class="category-btn" data-category="performances">演出记录</button>
+                <button class="category-btn" data-category="learning">学习记录</button>
+                <button class="category-btn" data-category="leisure">休闲记录</button>
+            </div>
+
+            <!-- 照片网格 -->
+            <div class="photo-grid">
+                <!-- 成就记录 -->
+                <div class="photo-item" data-category="achievements">
+                    <div class="photo-container">
+                        <img src="成就与比赛获奖背景.jpg" alt="成就记录1" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="achievements">
+                    <div class="photo-container">
+                        <img src="成2.jpg" alt="成就记录2" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="achievements">
+                    <div class="photo-container">
+                        <img src="成1.jpg" alt="成就记录3" class="photo-image">
+                    </div>
+                </div>
+
+                <!-- 演出记录 -->
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演出安排页面头部背景.jpg" alt="演出记录1" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演1.jpg" alt="演出记录2" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演2.jpg" alt="演出记录3" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演3.jpg" alt="演出记录4" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演4.jpg" alt="演出记录5" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演5.jpg" alt="演出记录6" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演6.jpg" alt="演出记录7" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演7.jpg" alt="演出记录8" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演8.jpg" alt="演出记录9" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="performances">
+                    <div class="photo-container">
+                        <img src="演9.jpg" alt="演出记录10" class="photo-image">
+                    </div>
+                </div>
+
+                <!-- 学习记录 -->
+                <div class="photo-item" data-category="learning">
+                    <div class="photo-container">
+                        <img src="学1.jpg" alt="学习记录1" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="learning">
+                    <div class="photo-container">
+                        <img src="学2.jpg" alt="学习记录2" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="learning">
+                    <div class="photo-container">
+                        <img src="学习经历页面头部背景.jpg" alt="学习记录3" class="photo-image">
+                    </div>
+                </div>
+
+                <!-- 休闲记录 -->
+                <div class="photo-item" data-category="leisure">
+                    <div class="photo-container">
+                        <img src="gallery/WechatIMG188.jpg" alt="休闲记录1" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="leisure">
+                    <div class="photo-container">
+                        <img src="gallery/WechatIMG189.jpg" alt="休闲记录2" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="leisure">
+                    <div class="photo-container">
+                        <img src="gallery/WechatIMG190.jpg" alt="休闲记录3" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="leisure">
+                    <div class="photo-container">
+                        <img src="gallery/WechatIMG191.jpg" alt="休闲记录4" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="leisure">
+                    <div class="photo-container">
+                        <img src="gallery/WechatIMG192.jpg" alt="休闲记录5" class="photo-image">
+                    </div>
+                </div>
+
+                <div class="photo-item" data-category="leisure">
+                    <div class="photo-container">
+                        <img src="gallery/WechatIMG193.jpg" alt="休闲记录6" class="photo-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 照片模态框 -->
+    <div class="photo-modal" id="photoModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img class="modal-image" id="modalImage" src="" alt="">
+            <div class="modal-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDate"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>邮箱：m15910639754@163.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 张格菡的生活记录. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="gallery.js?v=20250831T2140"></script>
+    <script src="font-detector.js?v=20250831T2200"></script>
+</body>
+</html>

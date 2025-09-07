@@ -3,38 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人介绍网站</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>张格菡 - 个人介绍网站</title>
+    <link rel="icon" type="image/png" href="图标新.png">
+    <link rel="shortcut icon" type="image/png" href="图标新.png">
+    <link rel="apple-touch-icon" href="图标新.png">
+    <link rel="stylesheet" href="styles.css?v=20250831T2150">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 强制预加载字体 -->
+    <link rel="preload" href="英雄体（主题）.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="手写（潇洒）.TTF" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="手写（锋利）.ttf" as="font" type="font/ttf" crossorigin>
+    
+    <!-- 自定义字体正确映射 -->
+    <style>
+        /* 强制字体加载和应用 */
+        @font-face {
+            font-family: 'VideoTheme';
+            src: url('英雄体（主题）.ttf') format('truetype');
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'HandwritingSharp';
+            src: url('手写（锋利）.ttf') format('truetype');
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'HandwritingStyle';
+            src: url('手写（潇洒）.TTF') format('truetype');
+            font-display: swap;
+        }
+        
+        /* 英雄体 - 用于主要标题 */
+        .hero-name,
+        .main-title,
+        .section-title,
+        .music-section .section-title {
+            font-family: 'VideoTheme', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', '黑体', sans-serif !important;
+            font-weight: normal !important;
+        }
+        
+        /* 手写（锋利）- 用于导航和页面标题 */
+        .nav-logo h2,
+        .performance-link,
+        .cloud-link,
+        .cloud-title {
+            font-family: 'HandwritingSharp', 'Kaiti SC', 'STKaiti', '楷体', serif !important;
+            font-weight: normal !important;
+        }
+        
+        /* 手写（潇洒）- 用于副标题 */
+        .hero-subtitle {
+            font-family: 'HandwritingStyle', 'Kaiti SC', 'STKaiti', '楷体', serif !important;
+            font-weight: normal !important;
+        }
+        
+        /* 确保导航栏字体正确 */
+        .nav-logo h2 {
+            font-size: 1.5rem !important;
+            color: #ffffff !important;
+            letter-spacing: 2px !important;
+        }
+        
+        /* 确保英雄标题字体正确 */
+        .hero-name {
+            font-size: 5rem !important;
+            font-weight: normal !important;
+            color: white !important;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+        }
+        
+        /* 确保作品展示标题字体正确 */
+        .music-section .section-title {
+            font-size: 4rem !important;
+            font-weight: normal !important;
+            color: #ffffff !important;
+        }
+        
+        /* 字体加载检测和调试 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            font-family: 'VideoTheme';
+            font-family: 'HandwritingSharp';
+            font-family: 'HandwritingStyle';
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>我的个人网站</h2>
+                <h2><a href="gallery.html">我的生活记录</a></h2>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="#home" class="nav-link">首页</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">个人介绍</a>
+                <li class="nav-item dropdown">
+                    <a href="#about" class="nav-link">关于我</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="performance.html">演出安排</a></li>
+                        <li><a href="learning.html">学习经历</a></li>
+                        <li><a href="achievements.html">成就与比赛获奖</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#schedule" class="nav-link">演出安排</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#music" class="nav-link">音乐展示</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#social" class="nav-link">微博链接</a>
+                    <a href="#music" class="nav-link">作品展示</a>
                 </li>
             </ul>
             <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>
@@ -43,8 +135,8 @@
     <section id="home" class="hero">
         <!-- 视频背景 -->
         <div class="video-background">
-            <video autoplay muted loop playsinline preload="auto" class="hero-video" id="heroVideo">
-                <source src="首页介绍视频.mp4" type="video/mp4">
+            <video autoplay loop playsinline preload="auto" class="hero-video" id="heroVideo">
+                <source src="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%A6%96%E9%A1%B5%E8%A7%86%E9%A2%91%E8%83%8C%E6%99%AF.mp4" type="video/mp4">
                 <!-- 如果浏览器不支持视频，显示回退背景 -->
                 您的浏览器不支持视频播放。
             </video>
@@ -59,256 +151,111 @@
         
         <div class="hero-content">
             <div class="hero-text">
-                <h1>欢迎来到我的个人网站</h1>
-                <p>这里展示我的音乐、演出和个人生活</p>
-                <a href="#about" class="cta-button">了解更多</a>
+                <h1 class="hero-name">
+                    <span class="char char-1">张</span><span class="char char-2">格</span><span class="char char-3">菡</span>
+                </h1>
+                <p class="hero-subtitle">
+                    <span class="subtitle-first">琴键起落，筑虹桥于粼光之上；</span><span class="subtitle-second">心海漫溯，坠繁星入永夜之梦。</span>
+                </p>
             </div>
-            <div class="hero-image">
-                <div class="profile-placeholder">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-            </div>
+        </div>
+        
+        <!-- 向下箭头 -->
+        <div class="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
         </div>
     </section>
 
     <!-- 个人介绍部分 -->
     <section id="about" class="about-section">
-        <div class="container">
-            <h2 class="section-title">个人介绍</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>关于我</h3>
-                    <p>我是一名热爱音乐的音乐人，专注于创作和表演。通过音乐表达内心的情感，希望能与听众产生共鸣。</p>
-                    <p>在音乐的道路上，我不断探索新的可能性，融合不同的音乐元素，创造出独特的音乐风格。</p>
-                    <div class="skills">
-                        <h4>专业技能</h4>
-                        <div class="skill-tags">
-                            <span class="skill-tag">作曲</span>
-                            <span class="skill-tag">编曲</span>
-                            <span class="skill-tag">演唱</span>
-                            <span class="skill-tag">吉他</span>
-                            <span class="skill-tag">钢琴</span>
+        <!-- 人物唱片背景图层 -->
+        <div class="rainbow-background">
+            <img src="人物唱片.png" alt="人物唱片" class="rainbow-bg-image">
+                        </div>
+        
+        <!-- 左侧文字内容 -->
+        <div class="content-left">
+            <!-- 身份介绍 -->
+            <div class="identity-intro">
+                <p class="identity-text">施坦威青年艺术家</p>
+                <p class="identity-text">中国海外青年音乐家</p>
+                    </div>
+            
+            <!-- 标题 -->
+            <h2 class="main-title">个人履历</h2>
+            
+            <!-- 详细履历 -->
+            <div class="biography-content">
+                <p class="bio-line">• 于2014年考入中央音乐学院附中初一年级；</p>
+                <p class="bio-line">• 2020年进入美国伊斯曼音乐学院；</p>
+                <p class="bio-line">• 2024年4月她成功收到朱利亚音乐学院、伊斯曼音乐学院等知名音乐学院高额奖学金的研究生录取通知书，并最终选择于今年9月入学朱利亚音乐学院开始跟随著名钢琴系系主任Soyeonkate Lee开始研究生学习。</p>
+                
+                <!-- 联系方式 -->
+                <div class="contact-info">
+                    <p class="contact-line">• 联系方式：<a href="mailto:m15910639754@163.com" class="email-link">m15910639754@163.com</a></p>
+                </div>
+                </div>
+            
+            <!-- 演出介绍板块 -->
+            <div class="performance-preview">
+                                    <!-- 拨云见日效果 -->
+            <div class="cloud-transition-section">
+                <!-- 拨云背景图 -->
+                <img src="拨云.png" alt="拨云背景" class="cloud-background-image">
+                <!-- 三片云层 -->
+                <div class="cloud-container">
+                    <img src="云（左上）.png" alt="云（左上）" class="cloud-image cloud-left">
+                    <img src="云（右上）.png" alt="云（右上）" class="cloud-image cloud-right-top">
+                    <img src="云（右下）.png" alt="云（右下）" class="cloud-image cloud-right-bottom">
+                    <div class="cloud-title-container">
+                        <h3 class="preview-title cloud-title">
+                            <a href="performance.html" class="performance-link white-text">演出安排</a>
+                        </h3>
+                        <div class="cloud-extra-links">
+                            <a href="learning.html" class="cloud-link white-text">学习经历</a>
+                            <a href="achievements.html" class="cloud-link white-text">成就与比赛获奖</a>
                         </div>
                     </div>
                 </div>
-                <div class="about-image">
-                    <div class="image-placeholder">
-                        <i class="fas fa-music"></i>
-                    </div>
-                </div>
             </div>
-        </div>
+                <!-- 演出内容已转移到 performance.html -->
+
+            <!-- 音乐展示部分 -->
     </section>
 
-    <!-- 演出安排部分 -->
-    <section id="schedule" class="schedule-section">
-        <div class="container">
-            <h2 class="section-title">演出安排</h2>
-            <div class="schedule-content">
-                <div class="upcoming-events">
-                    <h3>即将到来的演出</h3>
-                    <div class="event-list">
-                        <div class="event-card">
-                            <div class="event-date">
-                                <span class="day">15</span>
-                                <span class="month">12月</span>
-                            </div>
-                            <div class="event-details">
-                                <h4>冬季音乐会</h4>
-                                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 北京音乐厅</p>
-                                <p class="event-time"><i class="fas fa-clock"></i> 19:30</p>
-                                <p class="event-description">带来温暖的冬季音乐，包括原创作品和经典曲目。</p>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <div class="event-date">
-                                <span class="day">28</span>
-                                <span class="month">12月</span>
-                            </div>
-                            <div class="event-details">
-                                <h4>跨年演唱会</h4>
-                                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 上海大剧院</p>
-                                <p class="event-time"><i class="fas fa-clock"></i> 22:00</p>
-                                <p class="event-description">与大家一起迎接新的一年，用音乐传递祝福。</p>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <div class="event-date">
-                                <span class="day">10</span>
-                                <span class="month">1月</span>
-                            </div>
-                            <div class="event-details">
-                                <h4>新年音乐会</h4>
-                                <p class="event-location"><i class="fas fa-map-marker-alt"></i> 广州星海音乐厅</p>
-                                <p class="event-time"><i class="fas fa-clock"></i> 20:00</p>
-                                <p class="event-description">新年伊始，用美妙的音乐开启美好的一年。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- 音乐展示部分 -->
     <section id="music" class="music-section">
         <div class="container">
-            <h2 class="section-title">音乐展示</h2>
+            <h2 class="section-title">作品展示</h2>
             <div class="music-content">
-                <div class="music-categories">
-                    <button class="category-btn active" data-category="all">全部</button>
-                    <button class="category-btn" data-category="original">原创作品</button>
-                    <button class="category-btn" data-category="cover">翻唱作品</button>
-                    <button class="category-btn" data-category="live">现场录音</button>
-                </div>
-                <div class="music-grid">
-                    <div class="music-item" data-category="original">
-                        <div class="music-cover">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="music-info">
-                            <h4>春天的旋律</h4>
-                            <p>原创作品</p>
-                            <span class="duration">3:45</span>
-                        </div>
+                <div class="music-videos">
+                    <div class="video-item">
+                        <video controls class="music-video">
+                            <source src="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA1.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
                     </div>
-                    <div class="music-item" data-category="cover">
-                        <div class="music-cover">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="music-info">
-                            <h4>夜空中最亮的星</h4>
-                            <p>翻唱作品</p>
-                            <span class="duration">4:20</span>
-                        </div>
+                    
+                    <div class="video-item">
+                        <video controls class="music-video">
+                            <source src="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA2.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
                     </div>
-                    <div class="music-item" data-category="original">
-                        <div class="music-cover">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="music-info">
-                            <h4>城市夜雨</h4>
-                            <p>原创作品</p>
-                            <span class="duration">4:15</span>
-                        </div>
-                    </div>
-                    <div class="music-item" data-category="live">
-                        <div class="music-cover">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="music-info">
-                            <h4>现场版 - 海阔天空</h4>
-                            <p>现场录音</p>
-                            <span class="duration">5:30</span>
-                        </div>
-                    </div>
-                    <div class="music-item" data-category="original">
-                        <div class="music-cover">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="music-info">
-                            <h4>梦想起航</h4>
-                            <p>原创作品</p>
-                            <span class="duration">3:55</span>
-                        </div>
-                    </div>
-                    <div class="music-item" data-category="cover">
-                        <div class="music-cover">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <div class="music-info">
-                            <h4>平凡之路</h4>
-                            <p>翻唱作品</p>
-                            <span class="duration">4:45</span>
-                        </div>
+                    
+                    <div class="video-item">
+                        <video controls class="music-video">
+                            <source src="https://daisy-media.oss-cn-qingdao.aliyuncs.com/video/%E9%9F%B3%E4%B9%90%E5%B1%95%E7%A4%BA3.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 微博链接部分 -->
-    <section id="social" class="social-section">
-        <div class="container">
-            <h2 class="section-title">微博链接</h2>
-            <div class="social-content">
-                <div class="social-links">
-                    <a href="#" class="social-card weibo">
-                        <div class="social-icon">
-                            <i class="fab fa-weibo"></i>
-                        </div>
-                        <div class="social-info">
-                            <h4>微博主页</h4>
-                            <p>关注我的最新动态和音乐分享</p>
-                            <span class="followers">粉丝: 12.5K</span>
-                        </div>
-                    </a>
-                    <a href="#" class="social-card wechat">
-                        <div class="social-icon">
-                            <i class="fab fa-weixin"></i>
-                        </div>
-                        <div class="social-info">
-                            <h4>微信公众号</h4>
-                            <p>深度音乐内容和个人感悟</p>
-                            <span class="followers">订阅: 8.2K</span>
-                        </div>
-                    </a>
-                    <a href="#" class="social-card douyin">
-                        <div class="social-icon">
-                            <i class="fas fa-music"></i>
-                        </div>
-                        <div class="social-info">
-                            <h4>抖音账号</h4>
-                            <p>短视频音乐分享和日常</p>
-                            <span class="followers">粉丝: 25.8K</span>
-                        </div>
-                    </a>
-                    <a href="#" class="social-card bilibili">
-                        <div class="social-icon">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <div class="social-info">
-                            <h4>B站频道</h4>
-                            <p>音乐教学和演奏视频</p>
-                            <span class="followers">粉丝: 15.3K</span>
-                        </div>
-                    </a>
-                </div>
-                <div class="latest-posts">
-                    <h3>最新动态</h3>
-                    <div class="post-list">
-                        <div class="post-item">
-                            <div class="post-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="post-content">
-                                <p>今天在录音棚完成了新歌的录制，期待和大家分享！🎵</p>
-                                <span class="post-time">2小时前</span>
-                            </div>
-                        </div>
-                        <div class="post-item">
-                            <div class="post-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="post-content">
-                                <p>感谢昨晚来听演唱会的朋友们，你们的热情让我感动！❤️</p>
-                                <span class="post-time">1天前</span>
-                            </div>
-                        </div>
-                        <div class="post-item">
-                            <div class="post-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="post-content">
-                                <p>新专辑正在制作中，这次尝试了全新的音乐风格，敬请期待！</p>
-                                <span class="post-time">3天前</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- 页脚 -->
     <footer class="footer">
@@ -316,34 +263,15 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>联系方式</h3>
-                    <p><i class="fas fa-envelope"></i> email@example.com</p>
-                    <p><i class="fas fa-phone"></i> +86 138-0000-0000</p>
-                </div>
-                <div class="footer-section">
-                    <h3>快速链接</h3>
-                    <ul>
-                        <li><a href="#about">个人介绍</a></li>
-                        <li><a href="#schedule">演出安排</a></li>
-                        <li><a href="#music">音乐展示</a></li>
-                        <li><a href="#social">微博链接</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>关注我</h3>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-weibo"></i></a>
-                        <a href="#"><i class="fab fa-weixin"></i></a>
-                        <a href="#"><i class="fab fa-qq"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
+                    <p>邮箱：m15910639754@163.com</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 个人介绍网站. 保留所有权利.</p>
+                <p>&copy; 2025 张格菡个人介绍网站. 保留所有权利.</p>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20250831T2055"></script>
 </body>
 </html>
