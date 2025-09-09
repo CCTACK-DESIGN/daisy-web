@@ -1,11 +1,61 @@
+// 强制字体加载函数 - 解决锚点URL问题
+function forceLoadFonts() {
+    console.log('强制加载字体...');
+    
+    // 检查字体是否已加载
+    const checkFont = (fontFamily, testText = '测试Aa') => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        context.font = `16px monospace`;
+        const baselineWidth = context.measureText(testText).width;
+        context.font = `16px ${fontFamily}, monospace`;
+        const testWidth = context.measureText(testText).width;
+        return baselineWidth !== testWidth;
+    };
+    
+    // 强制触发字体加载
+    const fonts = ['VideoTheme', 'HandwritingSharp', 'HandwritingStyle'];
+    fonts.forEach(font => {
+        if (!checkFont(font)) {
+            console.log(`字体 ${font} 未加载，强制触发...`);
+            // 创建临时元素强制加载字体
+            const tempElement = document.createElement('div');
+            tempElement.style.fontFamily = font;
+            tempElement.style.position = 'absolute';
+            tempElement.style.left = '-9999px';
+            tempElement.style.fontSize = '1px';
+            tempElement.textContent = '字体加载测试';
+            document.body.appendChild(tempElement);
+            
+            // 强制重排和重绘
+            tempElement.offsetHeight;
+            
+            setTimeout(() => {
+                document.body.removeChild(tempElement);
+            }, 100);
+        } else {
+            console.log(`字体 ${font} 已加载`);
+        }
+    });
+}
+
 // 等待DOM加载完成
 document.addEventListener('DOMContentLoaded', function() {
+    // 立即强制加载字体
+    forceLoadFonts();
+    
+    // 如果是锚点URL，延迟再次强制加载
+    if (window.location.hash) {
+        console.log('检测到锚点URL，延迟强制加载字体');
+        setTimeout(forceLoadFonts, 100);
+        setTimeout(forceLoadFonts, 500);
+    }
     // 视频背景处理
     const heroVideo = document.querySelector('.hero-video');
     const videoBackground = document.querySelector('.video-background');
     const audioToggle = document.getElementById('audioToggle');
     
-    // 视频背景已恢复使用本地文件：首页视频背景.mp4
+    // 视频背景已更新为阿里云OSS链接
     
     if (heroVideo) {
         // 检测是否为移动设备
@@ -17,45 +67,90 @@ document.addEventListener('DOMContentLoaded', function() {
         heroVideo.autoplay = true;
         heroVideo.loop = true;
         
-        // 移动端优化：立即尝试静音播放
+        // 移动端优化：立即加载策略
         if (isMobile) {
-            heroVideo.muted = true; // 移动端默认静音播放
-            heroVideo.volume = 0.8; // 设置适中音量，等待用户交互
+            heroVideo.muted = false; // 移动端默认有声播放
+            heroVideo.volume = 1.0; // 设置最大音量
+            heroVideo.preload = 'auto'; // 立即开始加载
             
-            // 立即尝试播放（静音）
+            // 显示加载指示器
+            const loadingIndicator = document.getElementById('videoLoadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.classList.add('show');
+            }
+            
+            console.log('移动端立即开始加载视频...');
+            
+            // 监听加载进度
+            heroVideo.addEventListener('loadstart', () => {
+                console.log('视频开始加载');
+            });
+            
+            heroVideo.addEventListener('progress', () => {
+                if (heroVideo.buffered.length > 0) {
+                    const bufferedEnd = heroVideo.buffered.end(heroVideo.buffered.length - 1);
+                    const duration = heroVideo.duration;
+                    if (duration > 0) {
+                        const progress = (bufferedEnd / duration) * 100;
+                        console.log(`视频加载进度: ${Math.round(progress)}%`);
+                        
+                        // 更新加载文本显示进度
+                        const loadingText = document.querySelector('.loading-text');
+                        if (loadingText) {
+                            loadingText.textContent = `视频加载中... ${Math.round(progress)}%`;
+                        }
+                    }
+                }
+            });
+            
+            heroVideo.addEventListener('canplay', () => {
+                console.log('视频可以开始播放');
+                // 隐藏加载指示器
+                if (loadingIndicator) {
+                    loadingIndicator.classList.remove('show');
+                }
+            });
+            
+            // 立即尝试有声播放
             heroVideo.play().then(() => {
-                console.log('移动端静音播放成功');
+                console.log('移动端有声播放成功');
                 updateAudioButtonState();
+                // 确保隐藏加载指示器
+                if (loadingIndicator) {
+                    loadingIndicator.classList.remove('show');
+                }
             }).catch(error => {
-                console.log('移动端播放失败:', error);
-                // 如果播放失败，尝试在用户交互后播放
-                const playOnInteraction = () => {
-                    heroVideo.play().then(() => {
-                        console.log('用户交互后播放成功');
-                        updateAudioButtonState();
-                    }).catch(e => console.log('用户交互后播放仍失败:', e));
-                };
-                
-                // 监听各种交互事件来启动播放
-                document.addEventListener('touchstart', playOnInteraction, { once: true });
-                document.addEventListener('click', playOnInteraction, { once: true });
-                document.addEventListener('scroll', playOnInteraction, { once: true });
+                console.log('移动端有声播放失败，尝试静音播放:', error);
+                // 如果有声播放失败，尝试静音播放
+                heroVideo.muted = true;
+                heroVideo.play().then(() => {
+                    console.log('移动端静音播放成功');
+                    updateAudioButtonState();
+                    if (loadingIndicator) {
+                        loadingIndicator.classList.remove('show');
+                    }
+                }).catch(e => {
+                    console.log('移动端静音播放也失败:', e);
+                    if (loadingIndicator) {
+                        loadingIndicator.classList.remove('show');
+                    }
+                });
             });
         } else {
-            // 桌面端尝试有声音播放
+            // 桌面端默认有声音播放
             heroVideo.muted = false;
             heroVideo.volume = 1.0;
             
-            // 多次尝试有声音播放
+            // 积极的有声音播放策略
             function attemptPlayWithSound() {
                 heroVideo.muted = false;
                 heroVideo.volume = 1.0;
                 return heroVideo.play().then(() => {
-                    console.log('有声音播放成功');
+                    console.log('桌面端有声音播放成功');
                     updateAudioButtonState();
                     return true;
                 }).catch(error => {
-                    console.log('有声音播放失败:', error);
+                    console.log('桌面端有声音播放失败:', error);
                     return false;
                 });
             }
@@ -63,22 +158,31 @@ document.addEventListener('DOMContentLoaded', function() {
             // 立即尝试播放
             attemptPlayWithSound().then(success => {
                 if (!success) {
-                    // 如果立即播放失败，等待一下再试
-                    setTimeout(() => {
-                        attemptPlayWithSound().then(success2 => {
-                            if (!success2) {
-                                // 最后尝试静音播放作为后备
-                                heroVideo.muted = true;
-                                heroVideo.play().then(() => {
-                                    console.log('静音播放成功，等待用户交互启用声音');
-                                    updateAudioButtonState();
-                                }).catch(e => {
-                                    console.log('静音播放也失败:', e);
-                                    updateAudioButtonState();
+                    // 多次重试有声播放
+                    let retryCount = 0;
+                    const retryPlay = () => {
+                        if (retryCount < 5) {
+                            retryCount++;
+                            setTimeout(() => {
+                                attemptPlayWithSound().then(success => {
+                                    if (!success) {
+                                        retryPlay();
+                                    }
                                 });
-                            }
-                        });
-                    }, 1000);
+                            }, 500 * retryCount); // 逐渐增加重试间隔
+                        } else {
+                            // 最后尝试静音播放作为后备
+                            heroVideo.muted = true;
+                            heroVideo.play().then(() => {
+                                console.log('桌面端静音播放成功，等待用户交互启用声音');
+                                updateAudioButtonState();
+                            }).catch(e => {
+                                console.log('桌面端静音播放也失败:', e);
+                                updateAudioButtonState();
+                            });
+                        }
+                    };
+                    retryPlay();
                 }
             });
         }
@@ -170,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 全局的音频按钮状态更新函数
     function updateAudioButtonState() {
         if (audioToggle && heroVideo) {
-            if (heroVideo.muted) {
+            if (heroVideo.muted || heroVideo.volume === 0) {
                 audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
                 audioToggle.classList.remove('unmuted');
                 audioToggle.title = '点击开启声音';
@@ -605,19 +709,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 添加用户交互后立即启用声音的机制
+    // 添加用户交互后立即启用声音的机制 - 更积极的策略
     let userInteracted = false;
+    let soundEnableAttempts = 0;
+    
     function enableAudioAfterInteraction() {
-        if (!userInteracted && heroVideo) {
+        if (!userInteracted && heroVideo && soundEnableAttempts < 3) {
             userInteracted = true;
-            console.log('用户交互，立即启用声音');
+            soundEnableAttempts++;
+            console.log(`用户交互，立即启用声音 (尝试 ${soundEnableAttempts})`);
+            
             heroVideo.muted = false;
             heroVideo.volume = 1.0;
+            
+            // 强制重新播放以启用声音
+            const currentTime = heroVideo.currentTime;
+            heroVideo.currentTime = currentTime;
+            
             heroVideo.play().then(() => {
                 console.log('用户交互后有声音播放成功');
                 updateAudioButtonState();
             }).catch(e => {
                 console.log('用户交互后播放失败:', e);
+                // 如果失败，重置标志以便下次尝试
+                userInteracted = false;
                 updateAudioButtonState();
             });
         }
@@ -627,8 +742,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', enableAudioAfterInteraction);
     document.addEventListener('keydown', enableAudioAfterInteraction);
     document.addEventListener('touchstart', enableAudioAfterInteraction);
-    document.addEventListener('scroll', enableAudioAfterInteraction, { once: true });
-    document.addEventListener('mousemove', enableAudioAfterInteraction, { once: true });
+    document.addEventListener('touchend', enableAudioAfterInteraction);
+    document.addEventListener('scroll', enableAudioAfterInteraction);
+    document.addEventListener('mousemove', enableAudioAfterInteraction);
+    document.addEventListener('mousedown', enableAudioAfterInteraction);
+    
+    // 页面获得焦点时也尝试启用声音
+    window.addEventListener('focus', enableAudioAfterInteraction);
 
     // 个人介绍部分动画触发
     const aboutSection = document.querySelector('.about-section');
@@ -745,10 +865,75 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('👀 开始观察个人介绍部分，等待滚动触发动画');
     }
 
+    // 字体加载检测和修复 - 解决锚点URL字体显示问题
+    function checkAndFixFonts() {
+        const testElements = [
+            { selector: '.hero-name', font: 'VideoTheme' },
+            { selector: '.hero-subtitle', font: 'HandwritingStyle' },
+            { selector: '.nav-logo h2', font: 'HandwritingSharp' }
+        ];
+        
+        testElements.forEach(({ selector, font }) => {
+            const element = document.querySelector(selector);
+            if (element) {
+                // 强制重新应用字体
+                element.style.fontFamily = '';
+                setTimeout(() => {
+                    element.style.fontFamily = `'${font}', sans-serif`;
+                }, 100);
+                
+                // 检查字体是否正确加载
+                setTimeout(() => {
+                    const computedStyle = window.getComputedStyle(element);
+                    const fontFamily = computedStyle.fontFamily;
+                    console.log(`${selector} 字体检测:`, fontFamily);
+                    
+                    if (!fontFamily.includes(font)) {
+                        console.warn(`${font} 字体可能未正确加载，尝试修复...`);
+                        // 强制重新加载字体
+                        element.style.fontFamily = `'${font}', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif`;
+                    }
+                }, 500);
+            }
+        });
+    }
+    
+    // 页面加载完成后检查字体
+    checkAndFixFonts();
+    
+    // 如果是锚点URL，延迟再次检查
+    if (window.location.hash) {
+        setTimeout(checkAndFixFonts, 1000);
+        setTimeout(checkAndFixFonts, 2000);
+    }
+    
+    // 字体加载完成事件监听
+    if (document.fonts) {
+        document.fonts.ready.then(() => {
+            console.log('所有字体加载完成');
+            checkAndFixFonts();
+        });
+        
+        // 监听单个字体加载
+        ['VideoTheme', 'HandwritingStyle', 'HandwritingSharp'].forEach(fontName => {
+            document.fonts.load(`16px ${fontName}`).then(() => {
+                console.log(`${fontName} 字体加载完成`);
+            }).catch(error => {
+                console.error(`${fontName} 字体加载失败:`, error);
+            });
+        });
+    }
+
     console.log('个人介绍网站已加载完成！');
     
     // 云层动画现在可以自动工作，无需测试按钮
     console.log('✅ 云层动画系统已就绪，向下滚动到云层区域即可自动触发');
+    
+    // 最终字体检查 - 确保所有字体都已正确加载
+    setTimeout(() => {
+        forceLoadFonts();
+        console.log('执行最终字体检查');
+    }, 1000);
     
     // 设置云层观察器和滚动方向检测
     setTimeout(() => {
@@ -819,4 +1004,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }, 1000);
+});
+
+// 监听URL哈希变化，重新加载字体
+window.addEventListener('hashchange', function() {
+    console.log('URL哈希变化，重新加载字体');
+    setTimeout(forceLoadFonts, 100);
+});
+
+// 页面完全加载后再次检查字体
+window.addEventListener('load', function() {
+    console.log('页面完全加载，最终字体检查');
+    setTimeout(forceLoadFonts, 200);
 });
