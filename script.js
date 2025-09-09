@@ -8,49 +8,80 @@ document.addEventListener('DOMContentLoaded', function() {
     // 视频背景已恢复使用本地文件：首页视频背景.mp4
     
     if (heroVideo) {
+        // 检测是否为移动设备
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
         // 强制设置视频属性
-        heroVideo.muted = false; // 默认不静音
         heroVideo.playsInline = true;
         heroVideo.currentTime = 0;
         heroVideo.autoplay = true;
         heroVideo.loop = true;
-        heroVideo.volume = 1.0; // 设置最大音量
         
-        // 多次尝试有声音播放
-        function attemptPlayWithSound() {
+        // 移动端优化：立即尝试静音播放
+        if (isMobile) {
+            heroVideo.muted = true; // 移动端默认静音播放
+            heroVideo.volume = 0.8; // 设置适中音量，等待用户交互
+            
+            // 立即尝试播放（静音）
+            heroVideo.play().then(() => {
+                console.log('移动端静音播放成功');
+                updateAudioButtonState();
+            }).catch(error => {
+                console.log('移动端播放失败:', error);
+                // 如果播放失败，尝试在用户交互后播放
+                const playOnInteraction = () => {
+                    heroVideo.play().then(() => {
+                        console.log('用户交互后播放成功');
+                        updateAudioButtonState();
+                    }).catch(e => console.log('用户交互后播放仍失败:', e));
+                };
+                
+                // 监听各种交互事件来启动播放
+                document.addEventListener('touchstart', playOnInteraction, { once: true });
+                document.addEventListener('click', playOnInteraction, { once: true });
+                document.addEventListener('scroll', playOnInteraction, { once: true });
+            });
+        } else {
+            // 桌面端尝试有声音播放
             heroVideo.muted = false;
             heroVideo.volume = 1.0;
-            return heroVideo.play().then(() => {
-                console.log('有声音播放成功');
-                updateAudioButtonState();
-                return true;
-            }).catch(error => {
-                console.log('有声音播放失败:', error);
-                return false;
+            
+            // 多次尝试有声音播放
+            function attemptPlayWithSound() {
+                heroVideo.muted = false;
+                heroVideo.volume = 1.0;
+                return heroVideo.play().then(() => {
+                    console.log('有声音播放成功');
+                    updateAudioButtonState();
+                    return true;
+                }).catch(error => {
+                    console.log('有声音播放失败:', error);
+                    return false;
+                });
+            }
+            
+            // 立即尝试播放
+            attemptPlayWithSound().then(success => {
+                if (!success) {
+                    // 如果立即播放失败，等待一下再试
+                    setTimeout(() => {
+                        attemptPlayWithSound().then(success2 => {
+                            if (!success2) {
+                                // 最后尝试静音播放作为后备
+                                heroVideo.muted = true;
+                                heroVideo.play().then(() => {
+                                    console.log('静音播放成功，等待用户交互启用声音');
+                                    updateAudioButtonState();
+                                }).catch(e => {
+                                    console.log('静音播放也失败:', e);
+                                    updateAudioButtonState();
+                                });
+                            }
+                        });
+                    }, 1000);
+                }
             });
         }
-        
-        // 立即尝试播放
-        attemptPlayWithSound().then(success => {
-            if (!success) {
-                // 如果立即播放失败，等待一下再试
-                setTimeout(() => {
-                    attemptPlayWithSound().then(success2 => {
-                        if (!success2) {
-                            // 最后尝试静音播放作为后备
-                            heroVideo.muted = true;
-                            heroVideo.play().then(() => {
-                                console.log('静音播放成功，等待用户交互启用声音');
-                                updateAudioButtonState();
-                            }).catch(e => {
-                                console.log('静音播放也失败:', e);
-                                updateAudioButtonState();
-                            });
-                        }
-                    });
-                }, 1000);
-            }
-        });
         
         // 视频加载完成后的处理
         heroVideo.addEventListener('loadeddata', function() {
@@ -59,17 +90,40 @@ document.addEventListener('DOMContentLoaded', function() {
             heroVideo.classList.add('loaded');
             // 确保视频可见
             heroVideo.style.opacity = '1';
-            heroVideo.play().catch(function(error) {
-                console.log('视频自动播放失败:', error);
-                // 即使播放失败，也保持视频可见（静态第一帧）
-                heroVideo.style.opacity = '1';
-            });
+            
+            // 移动端立即尝试播放
+            if (isMobile) {
+                heroVideo.muted = true; // 确保静音
+                heroVideo.play().then(() => {
+                    console.log('视频加载完成后移动端播放成功');
+                }).catch(error => {
+                    console.log('视频加载完成后移动端播放失败:', error);
+                    // 即使播放失败，也保持视频可见（静态第一帧）
+                    heroVideo.style.opacity = '1';
+                });
+            } else {
+                heroVideo.play().catch(function(error) {
+                    console.log('视频自动播放失败:', error);
+                    // 即使播放失败，也保持视频可见（静态第一帧）
+                    heroVideo.style.opacity = '1';
+                });
+            }
         });
         
         // 视频可以播放时的处理
         heroVideo.addEventListener('canplay', function() {
             console.log('视频可以播放');
             heroVideo.classList.add('loaded');
+            
+            // 移动端在canplay时也尝试播放
+            if (isMobile) {
+                heroVideo.muted = true;
+                heroVideo.play().then(() => {
+                    console.log('canplay事件触发后移动端播放成功');
+                }).catch(error => {
+                    console.log('canplay事件触发后移动端播放失败:', error);
+                });
+            }
         });
         
         // 视频加载错误处理

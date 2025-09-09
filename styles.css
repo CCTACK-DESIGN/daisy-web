@@ -3352,19 +3352,29 @@ body {
         font-size: 1rem;
     }
     
-    /* 如果移动端性能不佳，可以隐藏视频显示回退背景 */
+    /* 移动端视频背景优化 - 保持显示但调整样式 */
     @media (max-width: 480px) {
         .video-background {
-            display: none;
+            display: block; /* 保持显示视频背景 */
         }
         
-        .hero::before {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        .hero-video {
+            /* 移动端视频优化 */
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
         }
         
-        /* 隐藏视频时也隐藏音频控制 */
+        /* 移动端音频控制按钮进一步缩小 */
         .video-controls {
-            display: none;
+            bottom: 15px;
+            right: 15px;
+        }
+        
+        .audio-toggle {
+            width: 40px;
+            height: 40px;
+            font-size: 0.9rem;
         }
     }
     
@@ -3476,12 +3486,23 @@ body {
     
     .hero-name {
         font-size: 2.5rem !important;
+        position: static !important; /* 移动端改为静态定位 */
+        left: auto !important;
+        top: auto !important;
+        text-align: center !important;
+        margin-bottom: 20px !important;
     }
     
     .hero-subtitle {
         margin: 0 !important;
         max-width: 100% !important;
         font-size: 1rem !important;
+        position: static !important; /* 移动端改为静态定位 */
+        right: auto !important;
+        top: auto !important;
+        text-align: center !important;
+        padding: 0 20px !important; /* 添加左右内边距 */
+        margin-top: 10px !important; /* 与标题保持适当距离 */
     }
     
     .about-content {
@@ -3545,11 +3566,22 @@ body {
     
     .hero-name {
         font-size: 2rem !important;
+        position: static !important; /* 小屏幕也改为静态定位 */
+        left: auto !important;
+        top: auto !important;
+        text-align: center !important;
+        margin-bottom: 15px !important;
     }
     
     .hero-subtitle {
         font-size: 0.9rem !important;
         line-height: 1.4 !important;
+        position: static !important; /* 小屏幕也改为静态定位 */
+        right: auto !important;
+        top: auto !important;
+        text-align: center !important;
+        padding: 0 15px !important; /* 小屏幕减少内边距 */
+        margin-top: 8px !important;
     }
     
     .section-title {
