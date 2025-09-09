@@ -23,17 +23,19 @@ jobs:
         with:
           submodules: false
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
       - name: Build
-        run: npm run build
+        run: |
+          # 创建 build 目录
+          mkdir -p build
+          # 复制所有网站文件到 build 目录
+          cp -r *.html *.css *.js *.ico *.png *.jpg *.svg *.json *.txt build/ 2>/dev/null || true
+          # 如果没有 index.html，创建一个简单的首页
+          if [ ! -f "build/index.html" ]; then
+            echo "<!DOCTYPE html><html><head><title>My Site</title></head><body><h1>Welcome to My Website</h1></body></html>" > build/index.html
+          fi
+          # 显示复制了哪些文件
+          echo "Built files:"
+          ls -la build/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
